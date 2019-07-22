@@ -4,7 +4,7 @@ var mongoose = require("mongoose");
 
 var PORT = process.env.PORT || 3000;
 
-var MONGODB_URI = "mongolab-flexible-39313"|| "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = "mongodb://heroku_25rbtb58:jmnog9djbash9hb3vqegimq6f4@ds253567.mlab.com:53567/heroku_25rbtb58"|| "mongodb://localhost/mongoHeadlines";
 
 // Initialize Express
 var app = express();
