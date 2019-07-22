@@ -2,7 +2,7 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 var MONGODB_URI = "mongolab-flexible-39313"|| "mongodb://localhost/mongoHeadlines";
 
