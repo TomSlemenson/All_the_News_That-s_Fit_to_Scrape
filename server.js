@@ -4,6 +4,8 @@ var mongoose = require("mongoose");
 
 var PORT = 3000;
 
+var MONGODB_URI = "mongolab-flexible-39313"|| "mongodb://localhost/mongoHeadlines";
+
 // Initialize Express
 var app = express();
 
@@ -18,7 +20,7 @@ app.use(express.static("public"));
 require('./router.js')(app);
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/hwPopulater", { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Start the server
 app.listen(PORT, function () {
