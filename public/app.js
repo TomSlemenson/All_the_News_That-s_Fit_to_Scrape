@@ -2,7 +2,7 @@
 $.getJSON("/articles", function (data) {
   $("#articles").empty();
   for (var i = 0; i < data.length; i++) {
-    $("#articles").prepend('<div class="mb-4"><h3>' + data[i].title + '</h3><p>' + data[i].summary1 + " " + data[i].summary2 + '</p><a class="btn btn-primary" href="' + data[i].link + '" target="blank">Read More</a><a data-id="' + data[i]._id + '" href="#" type="button" data-toggle="modal" data-target="#exampleModal"class="ml-4 btn btn-primary" id="addComment">Add Comment</a><a data-id="' + data[i]._id + '" href="#" class="ml-4 btn btn-primary" id="deleteArticle">Delete Article</a></div>');
+    $("#articles").prepend('<div class="mb-4"><h3>' + data[i].title + '</h3><p>' + data[i].summary1 + " " + data[i].summary2 + '</p><a class="btn btn-primary" href="' + data[i].link + '" target="blank">Read More</a><a data-id="' + data[i]._id + '" href="#" data-toggle="modal" data-target="#exampleModal" class="ml-4 btn btn-primary" id="addComment">Add Comment</a><a data-id="' + data[i]._id + '" href="#" class="ml-4 btn btn-primary" id="deleteArticle">Delete Article</a></div>');
   }
 });
 
