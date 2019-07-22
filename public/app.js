@@ -6,7 +6,7 @@ $.getJSON("/articles", function (data) {
   }
 });
 
-// SCREPE ALTPRESS
+// SCRAPE ALTPRESS
 $(document).on("click", "#altpressNews", function () {
   $.ajax({
     method: "GET",
@@ -18,7 +18,7 @@ $(document).on("click", "#altpressNews", function () {
   });
 });
 
-// SCREPE MTV
+// SCRAPE MTV
 $(document).on("click", "#mtvNews", function () {
   $.ajax({
     method: "GET",

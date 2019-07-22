@@ -109,6 +109,7 @@ exports.deleteComment = function (req, res) {
 exports.updateComment = function (req, res) {
   db.Note.update({ _id: req.params.id }, { $set: { title: req.body.title, body: req.body.body } })
     .then(function () {
+      alert("Your Comment was updated!")
     }).catch(function (err) {
       res.json(err);
     })
