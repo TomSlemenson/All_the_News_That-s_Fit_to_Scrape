@@ -1,10 +1,10 @@
+require("dotenv").config();
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
 var PORT = process.env.PORT || 3000;
-
-var MONGODB_URI = "mongodb://heroku_25rbtb58:jmnog9djbash9hb3vqegimq6f4@ds253567.mlab.com:53567/heroku_25rbtb58"|| "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI|| "mongodb://localhost/mongoHeadlines";
 
 // Initialize Express
 var app = express();
