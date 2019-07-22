@@ -2,6 +2,11 @@ var db = require('../models/index.js');
 var axios = require("axios");
 var cheerio = require("cheerio");
 
+// RENDER INDEX
+exports.index = function(req, res) {
+  res.render('index');
+};
+
 // SCRAPE ALTPRESS ARTICLES
 exports.altpress = function (req, res) {
   axios.get("https://www.altpress.com/news/").then(function (response) {

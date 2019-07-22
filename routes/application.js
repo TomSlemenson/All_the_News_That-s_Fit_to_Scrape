@@ -4,8 +4,8 @@ var router = express.Router();
 var application_controller = require('../controllers/application_controller.js');
 
 
-
-
+// RENDER INDEX
+router.get('/', application_controller.index);
 // SCRAPE ALTPRESS ARTICLES
 router.get("/scrapealtpress", application_controller.altpress);
 // SCRAPE MTV ARTICLES
