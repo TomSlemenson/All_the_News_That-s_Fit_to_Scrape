@@ -25,7 +25,4 @@ router.put("/notes/:id", application_controller.updateComment);
 //ADD A COMMENT
 router.post("/articles/:id", application_controller.addComment);
 
-// GET COMMENT
-// router.get("/notes", application_controller.getAllComment);
-
 module.exports = router;

@@ -62,13 +62,14 @@ exports.getArticles = function (req, res) {
 // DELETE A ARTICLE
 exports.deleteArticles = function (req, res) {
   db.Article.deleteOne({ _id: req.params.id })
-    .then(function () {
-      location.reload();
+  .then(function () {
+      return db.Note.remove({ article: req.params.id })
+    }).then(function () {
+      return location.reload();
     }).catch(function (err) {
       res.json(err);
     })
 }
-
 
 // GET ARTICLE'S TITLE AND ID
 exports.titleAndIdArticles = function (req, res) {
@@ -108,7 +109,6 @@ exports.deleteComment = function (req, res) {
 exports.updateComment = function (req, res) {
   db.Note.update({ _id: req.params.id }, { $set: { title: req.body.title, body: req.body.body } })
     .then(function () {
-      window.location = data.redirect;
     }).catch(function (err) {
       res.json(err);
     })

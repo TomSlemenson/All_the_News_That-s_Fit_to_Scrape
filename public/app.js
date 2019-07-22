@@ -1,5 +1,6 @@
 // GET ARTICLES
 $.getJSON("/articles", function (data) {
+  $("#articles").empty();
   for (var i = 0; i < data.length; i++) {
     $("#articles").prepend('<div class="mb-4"><h3>' + data[i].title + '</h3><p>' + data[i].summary1 + " " + data[i].summary2 + '</p><a class="btn btn-primary" href="' + data[i].link + '" target="blank">Read More</a><a data-id="' + data[i]._id + '" href="#" type="button" data-toggle="modal" data-target="#exampleModal"class="ml-4 btn btn-primary" id="addComment">Add Comment</a><a data-id="' + data[i]._id + '" href="#" class="ml-4 btn btn-primary" id="deleteArticle">Delete Article</a></div>');
   }
@@ -30,8 +31,11 @@ $(document).on("click", "#mtvNews", function () {
 });
 
 // GO TO COMMENTS
-$(document).on("click", "#addComment", refreshPopup)
+$(document).on("click", "#addComment", function () { 
+  var thisId = $(this).attr("data-id");
+  refreshPopup(thisId);
 
+});
 
 // DELETE THE ARTICLE
 $(document).on("click", "#deleteArticle", function () {
@@ -47,6 +51,9 @@ $(document).on("click", "#deleteArticle", function () {
 // ADD A COMMENT
 $(document).on("click", "#savenote", function () {
   var thisId = $(this).attr("data-id");
+
+  if($("#titleinput").val().length >= 1 && $("#bodyinput").val().length >= 1) {
+
   $.ajax({
     method: "POST",
     url: "/articles/" + thisId,
@@ -57,12 +64,15 @@ $(document).on("click", "#savenote", function () {
     }
   }).then(function (data) {
     console.log(data);
-    location.reload();
-    // $("#addNote").empty();
+    var thisId_popup = $("#addNote").children("h2").attr("data-id")
+    refreshPopup(thisId_popup)
   });
 
   $("#titleinput").val("");
   $("#bodyinput").val("");
+} else {
+  alert("To add a comment you must complite all form field")
+}
 });
 
 // DELETE A COMMENT
@@ -74,7 +84,8 @@ $(document).on("click", "#deletenote", function () {
     method: "DELETE",
     url: "/notes/" + thisId,
   }).then(function (getnotes) {
-    location.reload();
+    var thisId_popup = $("#addNote").children("h2").attr("data-id")
+    refreshPopup(thisId_popup)
   })
 });
 
@@ -95,10 +106,9 @@ $(document).on("click", "#updatenote", function () {
   })
 });
 
-function refreshPopup() {
+function refreshPopup(thisId) {
   $("#addNote").empty();
   $("#notes").empty();
-  var thisId = $(this).attr("data-id");
 
   $.ajax({
     method: "GET",
@@ -106,7 +116,7 @@ function refreshPopup() {
   }).then(function (data) {
     console.log(data);
 
-    $("#addNote").append("<h2 style='color:black'>" + data.title + "</h2>");
+    $("#addNote").append("<h2" + " data-id='" + thisId + "' style='color:black'>" + data.title + "</h2>");
     $("#addNote").append("<small style='color:black'>Comment Title</small>");
     $("#addNote").append("<input style='width:100%; height:36px;' class='mb-2 color:black' id='titleinput' name='title' >");
     $("#addNote").append("<small style='color:black'>Add Your Comment</small>");
@@ -117,12 +127,13 @@ function refreshPopup() {
       method: "GET",
       url: "/notes/" + thisId,
     }).then(function (data) {
+      console.log(data)
      
       if(data.length >= 1) {
         $("#addNote").append('<br class="mt-2"><hr><br>')
         $("#addNote").append('<h5 class="text-center" style="color:black">Comments</h5>')
         }
-      // console.log(data.length)
+
       for (var i = 0; i < data.length; i++) {
         var newDiv = $('<div style="color:black" class=" mt-2 pt-4 pb-4">')
         newDiv.append('<input style="width:100%; height:36px;" class="mb-2" id="title_note"></input>')
