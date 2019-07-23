@@ -118,10 +118,10 @@ function refreshPopup(thisId) {
 
     $("#addNote").append("<h2" + " data-id='" + thisId + "' style='color:black'>" + data.title + "</h2>");
     $("#addNote").append("<small style='color:black'>Comment Title</small>");
-    $("#addNote").append("<input style='width:100%; height:36px;' class='mb-2 color:black' id='titleinput' name='title' >");
+    $("#addNote").append("<input style='width:100%; border:0.8px solid black; height:36px; border-radius:4px;' class='mb-2 color:black' id='titleinput' name='title' >");
     $("#addNote").append("<small style='color:black'>Add Your Comment</small>");
-    $("#addNote").append("<textarea id='bodyinput' style='width:100%; height: 200px; color:black' name='body'></textarea>");
-    $("#addNote").append("<button class='btn btn-dark mt-2 color:black' data-id='" + data._id + "' id='savenote'>Add Note</button>");
+    $("#addNote").append("<textarea id='bodyinput' style='width:100%; border:0.8px solid black; border-radius:4px; height: 200px; color:black' name='body'></textarea>");
+    $("#addNote").append("<button class='btn btn-primary mt-2 color:black' data-id='" + data._id + "' id='savenote'>Add Note</button>");
     // GET THE NOTES FROM THE ARTICLE
     $.ajax({
       method: "GET",
@@ -130,16 +130,17 @@ function refreshPopup(thisId) {
       console.log(data)
      
       if(data.length >= 1) {
-        $("#addNote").append('<br class="mt-2"><hr><br>')
-        $("#addNote").append('<h5 class="text-center" style="color:black">Comments</h5>')
-        }
+        $("#addNote").append("<hr>")
+        $("#addNote").append('<h5 class="text-center mt-5 mb-5" style="color:black">Comments<br><small class="text-primary" style="font-size:12px;">Click on top of the comment to edit it.</small></h5>')
+      }
 
       for (var i = 0; i < data.length; i++) {
-        var newDiv = $('<div style="color:black" class=" mt-2 pt-4 pb-4">')
-        newDiv.append('<input style="width:100%; height:36px;" class="mb-2" id="title_note"></input>')
-        newDiv.append('<textarea style="height:150px; width:100%; color:black" id="body_note"></textarea>')
-        newDiv.append("<button class='btn btn-dark mt-2' data-id='" + data[i]._id + "' id='deletenote'>Delete Note</button>");
-        newDiv.append("<button class='btn btn-dark ml-2 mt-2' data-id='" + data[i]._id + "' id='updatenote'>Update Note</button>")
+        var newDiv = $('<div style="color:black" class=" mt-2 pt-4">')
+        newDiv.append('<input style="width:100%; border:none; height:36px; font-weight: 500; font-size:18px" class="mb-2" id="title_note"></input>')
+        newDiv.append('<textarea style="height:100px; border:none; width:100%; color:black" id="body_note"></textarea>')
+        newDiv.append("<button class='btn btn-primary mt-2' data-id='" + data[i]._id + "' id='deletenote'>Delete Note</button>");
+        newDiv.append("<button class='btn btn-primary ml-2 mt-2' data-id='" + data[i]._id + "' id='updatenote'>Update Note</button>")
+        newDiv.append("<hr>")
         $("#notes").prepend(newDiv);
         $("#title_note").val(data[i].title);
         $("#body_note").val(data[i].body);
