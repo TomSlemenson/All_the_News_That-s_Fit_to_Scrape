@@ -2,13 +2,14 @@ var db = require('../models/index.js');
 var axios = require("axios");
 var cheerio = require("cheerio");
 
+var controllerObj = {
 // RENDER INDEX
-exports.index = function(req, res) {
+index: function(req, res) {
   res.render('index');
-};
+},
 
 // SCRAPE ALTPRESS ARTICLES
-exports.altpress = function (req, res) {
+altpress: function (req, res) {
   axios.get("https://www.altpress.com/news/").then(function (response) {
     var $ = cheerio.load(response.data);
     $("div.item-details").each(function (i, element) {
@@ -27,10 +28,10 @@ exports.altpress = function (req, res) {
         })
     });
   });
-}
+},
 
 // SCRAPE MTV ARTICLES
-exports.mtv = function (req, res) {
+mtv: function (req, res) {
   axios.get("http://www.mtv.com/").then(function (response) {
     var $ = cheerio.load(response.data);
     $("a.secondary_item_wrap").each(function (i, element) {
@@ -49,11 +50,11 @@ exports.mtv = function (req, res) {
         })
     });
   })
-}
+},
 
 
 // GET ARTICLES
-exports.getArticles = function (req, res) {
+getArticles: function (req, res) {
   db.Article.find({})
     .then(function (dbArticle) {
       res.json(dbArticle);
@@ -61,11 +62,11 @@ exports.getArticles = function (req, res) {
     .catch(function (err) {
       res.json(err);
     });
-}
+},
 
 
 // DELETE A ARTICLE
-exports.deleteArticles = function (req, res) {
+deleteArticles: function (req, res) {
   db.Article.deleteOne({ _id: req.params.id })
   .then(function () {
       return db.Note.remove({ article: req.params.id })
@@ -74,10 +75,10 @@ exports.deleteArticles = function (req, res) {
     }).catch(function (err) {
       res.json(err);
     })
-}
+},
 
 // GET ARTICLE'S TITLE AND ID
-exports.titleAndIdArticles = function (req, res) {
+titleAndIdArticles: function (req, res) {
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function (dbArticle) {
@@ -86,10 +87,10 @@ exports.titleAndIdArticles = function (req, res) {
     .catch(function (err) {
       res.json(err);
     });
-}
+},
 
 // GET COMMENT
-exports.getComment = function (req, res) {
+getComment: function (req, res) {
   db.Note.find({ article: req.params.id })
     .then(function (dbnotes) {
       res.json(dbnotes);
@@ -97,31 +98,31 @@ exports.getComment = function (req, res) {
     .catch(function (err) {
       res.json(err);
     });
-}
+},
 
 // DELETE A COMMENT
-exports.deleteComment = function (req, res) {
+deleteComment: function (req, res) {
   db.Note.deleteOne({ _id: req.params.id })
     .then(function () {
       window.location = data.redirect;
     }).catch(function (err) {
       res.json(err);
     })
-}
+},
 
 
 // UPDATE A COMMENT
-exports.updateComment = function (req, res) {
+updateComment: function (req, res) {
   db.Note.update({ _id: req.params.id }, { $set: { title: req.body.title, body: req.body.body } })
     .then(function () {
       alert("Your Comment was updated!")
     }).catch(function (err) {
       res.json(err);
     })
-}
+},
 
 //ADD A COMMENT
-exports.getAllComment = function (req, res) {
+getAllComment: function (req, res) {
   db.Note.find({})
     .then(function (dbNote) {
       res.json(dbNote);
@@ -129,10 +130,10 @@ exports.getAllComment = function (req, res) {
     .catch(function (err) {
       res.json(err);
     });
-}
+},
 
 //ADD A COMMENT
-exports.addComment = function (req, res) {
+addComment: function (req, res) {
   db.Note.create(req.body)
     .then(function (dbNote) {
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id });
@@ -145,8 +146,9 @@ exports.addComment = function (req, res) {
     });
 }
 
+}
 
-
+module.exports = controllerObj;
 
 
 

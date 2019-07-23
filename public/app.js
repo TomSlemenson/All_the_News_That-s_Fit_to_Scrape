@@ -33,8 +33,8 @@ $(document).on("click", "#mtvNews", function () {
 // GO TO COMMENTS
 $(document).on("click", "#addComment", function () { 
   var thisId = $(this).attr("data-id");
-  refreshPopup(thisId);
-
+  refreshPopupInput(thisId);
+  refreshComments(thisId)
 });
 
 // DELETE THE ARTICLE
@@ -65,7 +65,8 @@ $(document).on("click", "#savenote", function () {
   }).then(function (data) {
     console.log(data);
     var thisId_popup = $("#addNote").children("h2").attr("data-id")
-    refreshPopup(thisId_popup)
+    // refreshPopup(thisId_popup)
+    refreshComments(thisId_popup)
   });
 
   $("#titleinput").val("");
@@ -85,7 +86,8 @@ $(document).on("click", "#deletenote", function () {
     url: "/notes/" + thisId,
   }).then(function (getnotes) {
     var thisId_popup = $("#addNote").children("h2").attr("data-id")
-    refreshPopup(thisId_popup)
+    refreshComments(thisId_popup)
+    // refreshPopup(thisId_popup)
   })
 });
 
@@ -106,9 +108,11 @@ $(document).on("click", "#updatenote", function () {
   })
 });
 
-function refreshPopup(thisId) {
+// DISPLAY THE COMMETS FORM
+function refreshPopupInput(thisId) {
   $("#addNote").empty();
   $("#notes").empty();
+  $("#notesH3").empty();
 
   $.ajax({
     method: "GET",
@@ -122,29 +126,37 @@ function refreshPopup(thisId) {
     $("#addNote").append("<small style='color:black'>Add Your Comment</small>");
     $("#addNote").append("<textarea id='bodyinput' style='width:100%; border:0.8px solid black; border-radius:4px; height: 200px; color:black' name='body'></textarea>");
     $("#addNote").append("<button class='btn btn-primary mt-2 color:black' data-id='" + data._id + "' id='savenote'>Add Note</button>");
-    // GET THE NOTES FROM THE ARTICLE
-    $.ajax({
-      method: "GET",
-      url: "/notes/" + thisId,
-    }).then(function (data) {
-      console.log(data)
-     
-      if(data.length >= 1) {
-        $("#addNote").append("<hr>")
-        $("#addNote").append('<h5 class="text-center mt-5 mb-5" style="color:black">Comments<br><small class="text-primary" style="font-size:12px;">Click on top of the comment to edit it.</small></h5>')
-      }
-
-      for (var i = 0; i < data.length; i++) {
-        var newDiv = $('<div style="color:black" class=" mt-2 pt-4">')
-        newDiv.append('<input style="width:100%; border:none; height:36px; font-weight: 500; font-size:18px" class="mb-2" id="title_note"></input>')
-        newDiv.append('<textarea style="height:100px; border:none; width:100%; color:black" id="body_note"></textarea>')
-        newDiv.append("<button class='btn btn-primary mt-2' data-id='" + data[i]._id + "' id='deletenote'>Delete Note</button>");
-        newDiv.append("<button class='btn btn-primary ml-2 mt-2' data-id='" + data[i]._id + "' id='updatenote'>Update Note</button>")
-        newDiv.append("<hr>")
-        $("#notes").prepend(newDiv);
-        $("#title_note").val(data[i].title);
-        $("#body_note").val(data[i].body);
-      }
-    });
+    // refreshComments(thisId)
   });
+}
+
+// DISPLAY THE COMMENTS FROM THE ARTICLE
+function refreshComments(thisId) {
+  $.ajax({
+    method: "GET",
+    url: "/notes/" + thisId,
+  }).then(function (data) {
+    console.log(data)
+
+    $("#notes").empty();
+    $("#notesH3").empty();
+   
+    if(data.length >= 1) {
+      $("#notesH3").append("<hr>")
+      $("#notesH3").append('<h5 class="text-center mt-5 mb-5" style="color:black">Comments<br><small class="text-primary" style="font-size:12px;">Click on top of the comment to edit it.</small></h5>')
+    }
+
+    for (var i = 0; i < data.length; i++) {
+      var newDiv = $('<div style="color:black" class=" mt-2 pt-4">')
+      newDiv.append('<input style="width:100%; border:none; height:36px; font-weight: 500; font-size:18px" class="mb-2" id="title_note"></input>')
+      newDiv.append('<textarea style="height:100px; border:none; width:100%; color:black" id="body_note"></textarea>')
+      newDiv.append("<button class='btn btn-primary mt-2' data-id='" + data[i]._id + "' id='deletenote'>Delete Note</button>");
+      newDiv.append("<button class='btn btn-primary ml-2 mt-2' data-id='" + data[i]._id + "' id='updatenote'>Update Note</button>")
+      newDiv.append("<hr>")
+      $("#notes").prepend(newDiv);
+      $("#title_note").val(data[i].title);
+      $("#body_note").val(data[i].body);
+    }
+  });
+
 }
