@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Scraping With Mongoose</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>THE NEWS SCRAPER</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -16,6 +18,46 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/036763e8d5.js"></script>
+
+    <style>
+
+        @media screen and (max-width: 1200px) {
+
+            .container {
+                max-width: 100%;
+            }
+
+            .nav_a {
+                font-size: 13px;
+                width: 48%;
+            }
+
+            .float_ {
+                float: right
+            }
+
+            .article_a {
+                font-size: 13px;
+            }
+        }
+
+        @media screen and (max-width: 517px) {
+            .nav_a {
+                max-width: 170px;
+            }
+
+            .float_ {
+                float: none;
+            }
+
+            .article_a {
+                width: 112.5px;
+                font-size: 11px;
+                margin-right: -18px;
+            }
+        }
+        
+    </style>
 </head>
 
 <body class="bg-dark">
