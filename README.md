@@ -2,7 +2,7 @@
 
 "THE NEWSCRAPER" can scrape news from different websites, add comments to each article, update or delete comments as well as delete your articles. You don't need to waste your time searching for news in different sites because "THE NEWSCRAPER" does that for you! To check out our demo website [Click here](https://whispering-peak-34768.herokuapp.com/#).
 
-## See the app in action.
+## See the app in action!
 
 
 1. SCRAPE MTV & ALTPRESS.
