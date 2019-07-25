@@ -1,17 +1,17 @@
 // GET ARTICLES
-$.getJSON("/articles", function (data) {
+$.getJSON("/articles", data => {
   $("#articles").empty();
-  for (var i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     $("#articles").prepend('<div class="mb-4"><h3>' + data[i].title + '</h3><p>' + data[i].summary1 + " " + data[i].summary2 + '</p><a class="btn btn-primary article_a" href="' + data[i].link + '" target="blank">Read More</a><a data-id="' + data[i]._id + '" href="#" data-toggle="modal" data-target="#exampleModal" class="ml-4 btn btn-primary article_a" id="addComment">Add Comment</a><a data-id="' + data[i]._id + '" href="#" class="ml-4 btn btn-primary article_a" id="deleteArticle">Delete Article</a></div>');
   }
 });
 
 // SCRAPE ALTPRESS
-$(document).on("click", "#altpressNews", function () {
+$(document).on("click", "#altpressNews", () => {
   $.ajax({
     method: "GET",
     url: "/scrapealtpress"
-  }).then(function (data) {
+  }).then(data => {
     console.log(data)
     location.reload();
     alert("Altpress scrape Complete")
@@ -19,11 +19,11 @@ $(document).on("click", "#altpressNews", function () {
 });
 
 // SCRAPE MTV
-$(document).on("click", "#mtvNews", function () {
+$(document).on("click", "#mtvNews", () => {
   $.ajax({
     method: "GET",
     url: "/scrapemtv"
-  }).then(function (data) {
+  }).then(data => {
     console.log(data)
     location.reload();
     alert("MTV scrape Complete")
@@ -31,69 +31,65 @@ $(document).on("click", "#mtvNews", function () {
 });
 
 // GO TO COMMENTS
-$(document).on("click", "#addComment", function () { 
-  var thisId = $(this).attr("data-id");
-  refreshPopupInput(thisId);
+$(document).on("click", "#addComment", function () {
+  let thisId = $(this).attr("data-id");
   refreshComments(thisId)
+  refreshPopupInput(thisId);
 });
 
 // DELETE THE ARTICLE
 $(document).on("click", "#deleteArticle", function () {
-  var thisId = $(this).attr("data-id");
+  let thisId = $(this).attr("data-id");
   $.ajax({
     method: "DELETE",
     url: "/articles/" + thisId,
-  }).then(function () {
-    location.reload();
-  });
+  }).then(() => location.reload());
 });
 
 // ADD A COMMENT
 $(document).on("click", "#savenote", function () {
-  var thisId = $(this).attr("data-id");
+  let thisId = $(this).attr("data-id");
 
-  if($("#titleinput").val().length >= 1 && $("#bodyinput").val().length >= 1) {
+  if ($("#titleinput").val().length >= 1 && $("#bodyinput").val().length >= 1) {
 
-  $.ajax({
-    method: "POST",
-    url: "/articles/" + thisId,
-    data: {
-      title: $("#titleinput").val(),
-      body: $("#bodyinput").val(),
-      article: thisId
-    }
-  }).then(function (data) {
-    console.log(data);
-    var thisId_popup = $("#addNote").children("h2").attr("data-id")
-    // refreshPopup(thisId_popup)
-    refreshComments(thisId_popup)
-  });
+    $.ajax({
+      method: "POST",
+      url: "/articles/" + thisId,
+      data: {
+        title: $("#titleinput").val(),
+        body: $("#bodyinput").val(),
+        article: thisId
+      }
+    }).then(data => {
+      console.log(data);
+      let thisId_popup = $("#addNote").children("h2").attr("data-id")
+      refreshComments(thisId_popup)
+    });
 
-  $("#titleinput").val("");
-  $("#bodyinput").val("");
-} else {
-  alert("To add a comment you must complite all form field")
-}
+    $("#titleinput").val("");
+    $("#bodyinput").val("");
+  } else {
+    alert("To add a comment you must complite all form field")
+  }
 });
 
 // DELETE A COMMENT
 $(document).on("click", "#deletenote", function () {
-  var thisId = $(this).attr("data-id");
+  let thisId = $(this).attr("data-id");
   console.log(thisId)
 
   $.ajax({
     method: "DELETE",
     url: "/notes/" + thisId,
-  }).then(function (getnotes) {
-    var thisId_popup = $("#addNote").children("h2").attr("data-id")
+  }).then(data => {
+    let thisId_popup = $("#addNote").children("h2").attr("data-id")
     refreshComments(thisId_popup)
-    // refreshPopup(thisId_popup)
   })
 });
 
 // UPDATE A COMMENT
 $(document).on("click", "#updatenote", function () {
-  var thisId = $(this).attr("data-id");
+  let thisId = $(this).attr("data-id");
   console.log(thisId)
 
   $.ajax({
@@ -103,13 +99,11 @@ $(document).on("click", "#updatenote", function () {
       title: $("#title_note").val(),
       body: $("#body_note").val(),
     }
-  }).then(function (data) {
-    alert("Your Comment was updated!")
-  })
+  }).then(data => alert("Your Comment was updated!"))
 });
 
 // DISPLAY THE COMMETS FORM
-function refreshPopupInput(thisId) {
+const refreshPopupInput = thisId => {
   $("#addNote").empty();
   $("#notes").empty();
   $("#notesH3").empty();
@@ -117,7 +111,7 @@ function refreshPopupInput(thisId) {
   $.ajax({
     method: "GET",
     url: "/articles/" + thisId
-  }).then(function (data) {
+  }).then(data => {
     console.log(data);
 
     $("#addNote").append("<h2" + " data-id='" + thisId + "' style='color:black'>" + data.title + "</h2>");
@@ -126,28 +120,27 @@ function refreshPopupInput(thisId) {
     $("#addNote").append("<small style='color:black'>Add Your Comment</small>");
     $("#addNote").append("<textarea id='bodyinput' style='width:100%; border:0.8px solid black; border-radius:4px; height: 200px; color:black' name='body'></textarea>");
     $("#addNote").append("<button class='btn btn-primary mt-2 color:black' data-id='" + data._id + "' id='savenote'>Add Note</button>");
-    // refreshComments(thisId)
   });
 }
 
 // DISPLAY THE COMMENTS FROM THE ARTICLE
-function refreshComments(thisId) {
+const refreshComments = thisId => {
   $.ajax({
     method: "GET",
     url: "/notes/" + thisId,
-  }).then(function (data) {
+  }).then(data => {
     console.log(data)
 
     $("#notes").empty();
     $("#notesH3").empty();
-   
-    if(data.length >= 1) {
+
+    if (data.length >= 1) {
       $("#notesH3").append("<hr>")
       $("#notesH3").append('<h5 class="text-center mt-5 mb-5" style="color:black">Comments<br><small class="text-primary" style="font-size:12px;">Click on top of the comment to edit it.</small></h5>')
     }
 
-    for (var i = 0; i < data.length; i++) {
-      var newDiv = $('<div style="color:black" class=" mt-2 pt-4">')
+    for (let i = 0; i < data.length; i++) {
+      let newDiv = $('<div style="color:black" class=" mt-2 pt-4">')
       newDiv.append('<input style="width:100%; border:none; height:36px; font-weight: 500; font-size:18px" class="mb-2" id="title_note"></input>')
       newDiv.append('<textarea style="height:100px; border:none; width:100%; color:black" id="body_note"></textarea>')
       newDiv.append("<button class='btn btn-primary mt-2' data-id='" + data[i]._id + "' id='deletenote'>Delete Note</button>");

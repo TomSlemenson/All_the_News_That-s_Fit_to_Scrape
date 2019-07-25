@@ -1,7 +1,7 @@
 
-var express = require("express");
-var router = express.Router();
-var application_controller = require('../controllers/application_controller.js');
+const express = require("express");
+const router = express.Router();
+const application_controller = require('../controllers/application_controller.js');
 
 
 // RENDER INDEX

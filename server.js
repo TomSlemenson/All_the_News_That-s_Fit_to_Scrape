@@ -3,10 +3,10 @@ const express = require("express");
 const path = require('path');
 const logger = require("morgan");
 
-var PORT = process.env.PORT || 3000;
+let PORT = process.env.PORT || 3000;
 
 // Initialize Express
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -15,7 +15,7 @@ app.set('views', path.join(__dirname, 'views'));
 const exphbs = require('express-handlebars');
 
 app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
+  defaultLayout: 'main'
 }));
 
 app.set('view engine', 'handlebars');
@@ -31,6 +31,4 @@ app.use(express.static(path.join(__dirname, 'public')));
 require('./router.js')(app);
 
 // Start the server
-app.listen(PORT, function () {
-  console.log("App running on port " + PORT + "!");
-});
+app.listen(PORT, () => console.log("App running on port " + PORT + "!"));
